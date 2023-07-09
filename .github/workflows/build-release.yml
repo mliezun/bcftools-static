@@ -1,0 +1,51 @@
+name: Build and release
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build v1.8
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.8
+      - name: Build v1.9
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.9
+      - name: Build v1.10
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.10
+      - name: Build v1.11
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.11
+      - name: Build v1.12
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.12
+      - name: Build v1.13
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.13
+      - name: Build v1.14
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.14
+      - name: Build v1.15
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.15
+      - name: Build v1.16
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.16
+      - name: Build v1.17
+        run: |
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh 1.17
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          title: "Development Build"
+          automatic_release_tag: "latest"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          files: |
+            release/bcftools-*
