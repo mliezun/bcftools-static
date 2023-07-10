@@ -16,6 +16,7 @@ jobs:
         id: vars
         run: echo "version=${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT
       - name: Build
+        id: build
         run: |
           docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh ${{ steps.vars.outputs.version }}
           cd release
@@ -50,6 +51,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/${{ steps.vars.outputs.binary }}
-          asset_name: ${{ steps.vars.outputs.binary }}
+          asset_path: ./release/${{ steps.build.outputs.binary }}
+          asset_name: ${{ steps.build.outputs.binary }}
           asset_content_type: application/octet-stream
