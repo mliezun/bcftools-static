@@ -2,6 +2,7 @@
 
 CURL_VERSION='8.1.2'
 BCFTOOLS_VERSION='1.8'
+TARGET='x86_64-linux'
 
 [ "$1" != "" ] && BCFTOOLS_VERSION="$1"
 
@@ -60,4 +61,4 @@ strip ./bcftools
 
 mkdir -p /build/release
 
-mv ./bcftools /build/release/bcftools-${BCFTOOLS_VERSION}
+mv ./bcftools /build/release/bcftools-${BCFTOOLS_VERSION}-${TARGET}
