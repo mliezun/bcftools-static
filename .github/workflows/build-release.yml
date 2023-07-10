@@ -17,9 +17,27 @@ jobs:
         run: echo "version=${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT
       - name: Build
         run: |
-          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh ${{ steps.vars.outputs.tag }}
-      - name: Upload Release Asset
-        uses: AButler/upload-release-assets@v2.0
+          docker run --rm -v $(pwd):/build -w /root alpine:latest /build/build.sh ${{ steps.vars.outputs.version }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: "release/bcftools-*"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ steps.vars.outputs.version }}
+          release_name: Release ${{ steps.vars.outputs.version }}
+          body: |
+            ### Automated Release
+
+            Static binaries compiled with the following dependencies:
+
+            - htslib ${{ steps.vars.outputs.version }}
+            - curl 8.1.2
+            - openssl 3.1.1
+            - libssh2 1.10.0
+            - nghttp2 1.53.0
+            - xz 5.4.3
+            - zlib 1.2.13
+            - bzip2 1.0.8
+          draft: false
+          prerelease: false
