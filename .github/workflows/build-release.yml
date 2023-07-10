@@ -3,7 +3,7 @@ name: Build and release
 on:
   push:
     tags:
-      - "v*"
+      - "*"
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.vars.outputs.version }}
+          tag_name: v${{ steps.vars.outputs.version }}
           release_name: ${{ steps.vars.outputs.version }}
           body: |
             ### Automated Release
